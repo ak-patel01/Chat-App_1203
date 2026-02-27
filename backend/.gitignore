@@ -1,0 +1,47 @@
+# Build outputs
+**/bin/
+**/obj/
+**/out/
+**/publish/
+artifacts/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio / VS Code
+.vs/
+.vscode/
+
+# Rider / ReSharper
+.idea/
+*.sln.iml
+_ReSharper*/
+*.[Rr]e[Ss]harper
+
+# Logs
+*.log
+logs/
+
+# NuGet packages folder (if used locally)
+packages/
+
+# Test and coverage
+TestResults/
+*.coverage
+*.coveragexml
+
+# Local environment
+.env
+.env.*
+
+# ASP.NET local secrets/certs
+**/secrets.json
+**/*.pfx
+
+# EF Core local SQLite files (if ever used)
+*.db
+*.db-shm
+*.db-wal

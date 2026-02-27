@@ -1,0 +1,119 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+
+  /* ─── Light Mode ─── Warm White + Violet ─── */
+  :root {
+    --background: 36 100% 98.5%;
+    /* #FFFBF5 warm white */
+    --foreground: 240 10% 12%;
+    /* near black */
+
+    --card: 0 0% 100%;
+    /* pure white cards */
+    --card-foreground: 240 10% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 12%;
+
+    --primary: 263 70% 58%;
+    /* #7C3AED violet */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 263 50% 95%;
+    /* light lavender */
+    --secondary-foreground: 263 50% 30%;
+
+    --muted: 260 30% 96%;
+    /* soft lavender muted */
+    --muted-foreground: 240 5% 46%;
+
+    --accent: 263 50% 93%;
+    /* lavender accent */
+    --accent-foreground: 263 60% 40%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 260 20% 90%;
+    --input: 260 20% 90%;
+    --ring: 263 70% 58%;
+    --radius: 0.5rem;
+
+    /* Sidebar (custom) */
+    --sidebar-bg: 263 30% 97%;
+    /* very light lavender */
+    --sidebar-foreground: 240 10% 20%;
+    --sidebar-border: 260 20% 90%;
+    --sidebar-hover: 263 50% 93%;
+
+    /* Charts */
+    --chart-1: 263 70% 58%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 340 65% 60%;
+    --chart-5: 200 70% 50%;
+  }
+
+  /* ─── Dark Mode ─── Charcoal + Vivid Violet ─── */
+  .dark {
+    --background: 240 6% 10%;
+    /* #18181B deep charcoal */
+    --foreground: 240 5% 90%;
+    /* #E4E4E7 warm gray text */
+
+    --card: 240 4% 16%;
+    /* dark card bg */
+    --card-foreground: 240 5% 90%;
+
+    --popover: 240 4% 16%;
+    --popover-foreground: 240 5% 90%;
+
+    --primary: 263 60% 68%;
+    /* #A78BFA vivid violet */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 240 4% 20%;
+    --secondary-foreground: 240 5% 90%;
+
+    --muted: 240 4% 20%;
+    --muted-foreground: 240 5% 65%;
+
+    --accent: 263 30% 25%;
+    --accent-foreground: 263 60% 80%;
+
+    --destructive: 0 62% 45%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 240 4% 22%;
+    --input: 240 4% 22%;
+    --ring: 263 60% 68%;
+
+    /* Sidebar (custom) */
+    --sidebar-bg: 240 4% 15%;
+    /* #27272A muted dark */
+    --sidebar-foreground: 240 5% 80%;
+    --sidebar-border: 240 4% 22%;
+    --sidebar-hover: 263 30% 25%;
+
+    /* Charts */
+    --chart-1: 263 60% 68%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 200 70% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
