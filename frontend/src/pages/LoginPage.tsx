@@ -53,11 +53,7 @@ export default function LoginPage() {
       // Store name for dashboard greeting
       localStorage.setItem("userName", response.name);
 
-      if (response.userType === "SuperAdmin") {
-        navigate("/admin/dashboard");
-      } else {
-        navigate("/dashboard");
-      }
+      navigate("/dashboard");
     } catch (err) {
       const error = err as AxiosError<{ message: string }>;
       setError(error.response?.data?.message || "Login failed");

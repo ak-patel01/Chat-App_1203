@@ -45,8 +45,8 @@
     /* Sidebar (custom) */
     --sidebar-bg: 263 30% 97%;
     /* very light lavender */
-    --sidebar-foreground: 240 10% 20%;
-    --sidebar-border: 260 20% 90%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-border: 220 13% 91%;
     --sidebar-hover: 263 50% 93%;
 
     /* Charts */
@@ -55,6 +55,12 @@
     --chart-3: 30 80% 55%;
     --chart-4: 340 65% 60%;
     --chart-5: 200 70% 50%;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
   /* ─── Dark Mode ─── Charcoal + Vivid Violet ─── */
@@ -94,8 +100,8 @@
     /* Sidebar (custom) */
     --sidebar-bg: 240 4% 15%;
     /* #27272A muted dark */
-    --sidebar-foreground: 240 5% 80%;
-    --sidebar-border: 240 4% 22%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
     --sidebar-hover: 263 30% 25%;
 
     /* Charts */
@@ -104,6 +110,12 @@
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 200 70% 55%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 }
 
