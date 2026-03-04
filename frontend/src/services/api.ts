@@ -8,6 +8,11 @@ export interface DashboardStats {
     totalUnreadMessages?: number;
 }
 
+export interface TrendDataPoint {
+    date: string;
+    count: number;
+}
+
 export interface AuthResponse {
     token: string;
     refreshToken: string;
@@ -44,6 +49,17 @@ export const dashboardService = {
     },
     getUserStats: async () => {
         const response = await api.get<DashboardStats>("/dashboard/user");
+        return response.data;
+    },
+    getAdminUserTrend: async (startDate?: string, endDate?: string) => {
+        let url = '/dashboard/admin/user-trend';
+        const params = new URLSearchParams();
+        if (startDate) params.append('startDate', startDate);
+        if (endDate) params.append('endDate', endDate);
+        const qs = params.toString();
+        if (qs) url += `?${qs}`;
+        
+        const response = await api.get<TrendDataPoint[]>(url);
         return response.data;
     }
 };

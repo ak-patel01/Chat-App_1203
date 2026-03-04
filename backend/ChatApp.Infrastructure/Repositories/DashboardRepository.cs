@@ -41,4 +41,25 @@ public class DashboardRepository : IDashboardRepository
             TotalUnreadMessages = unreadCount
         };
     }
+
+    public async Task<List<UserCreationTrendDto>> GetUserCreationTrendAsync(DateTime startDateUtc, DateTime endDateUtc)
+    {
+        var dbCounts = await _context.ApplicationUsers
+            .Where(u => u.CreatedAt >= startDateUtc && u.CreatedAt <= endDateUtc)
+            .GroupBy(u => u.CreatedAt.Date)
+            .Select(g => new { Date = g.Key, Count = g.Count() })
+            .ToDictionaryAsync(x => x.Date, x => x.Count);
+
+        var result = new List<UserCreationTrendDto>();
+        for (var date = startDateUtc.Date; date <= endDateUtc.Date; date = date.AddDays(1))
+        {
+            result.Add(new UserCreationTrendDto
+            {
+                Date = date.ToString("yyyy-MM-dd"),
+                Count = dbCounts.TryGetValue(date, out var count) ? count : 0
+            });
+        }
+
+        return result;
+    }
 }

@@ -34,4 +34,12 @@ public class DashboardController : ControllerBase
         var stats = await _service.GetUserDashboardAsync(userId);
         return Ok(stats);
     }
+
+    [HttpGet("admin/user-trend")]
+    [Authorize(Roles = "SuperAdmin")]
+    public async Task<IActionResult> GetUserCreationTrend([FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)
+    {
+        var trend = await _service.GetUserCreationTrendAsync(startDate, endDate);
+        return Ok(trend);
+    }
 }

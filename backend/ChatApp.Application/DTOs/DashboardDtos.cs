@@ -12,3 +12,9 @@ public class UserDashboardStatsDto
     public int TotalConversations { get; set; }
     public int TotalUnreadMessages { get; set; }
 }
+
+public class UserCreationTrendDto
+{
+    public string Date { get; set; } = string.Empty;
+    public int Count { get; set; }
+}

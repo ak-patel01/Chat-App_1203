@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "@/api/axios";
 import {
   Card,
   CardContent,
@@ -8,13 +7,8 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
-
-interface DashboardStats {
-  totalUsers?: number;
-  totalConversations: number;
-  totalMessages?: number;
-  totalUnreadMessages?: number;
-}
+import UserCreationChart from "@/components/UserCreationChart";
+import { useDashboardStats } from "@/hooks/useDashboard";
 
 // ── SVG Icons ──────────────────────────────────────────────────────
 
@@ -143,29 +137,25 @@ function getGreeting(): string {
 // ── Main Component ─────────────────────────────────────────────────
 
 export default function DashboardPage() {
-  const [stats, setStats] = useState<DashboardStats | null>(null);
-  const [loading, setLoading] = useState(true);
-  const userType = localStorage.getItem("userType");
-  const userName = localStorage.getItem("userName") || "User";
+  const { stats, trendData, loading, trendLoading, refetchTrend } =
+    useDashboardStats();
+
+  // Custom date range state for trend graph
+  const defaultEnd = new Date().toISOString().split("T")[0];
+  const defaultStart = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+    .toISOString()
+    .split("T")[0];
+  const [startDate, setStartDate] = useState(defaultStart);
+  const [endDate, setEndDate] = useState(defaultEnd);
+
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        const endpoint =
-          userType === "SuperAdmin" ? "/dashboard/admin" : "/dashboard/user";
-        const response = await api.get(endpoint);
-        setStats(response.data);
-      } catch (error) {
-        console.error("Failed to fetch dashboard stats", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchStats();
-  }, [userType]);
-
+  const userName = localStorage.getItem("userName") || "User";
+  const userType = localStorage.getItem("userType");
   const isAdmin = userType === "SuperAdmin";
+
+  const handleApplyFilters = () => {
+    refetchTrend(startDate, endDate);
+  };
 
   // ── Stat card config ─────────────────────────────────────────────
 
@@ -292,6 +282,78 @@ export default function DashboardPage() {
               </Card>
             ))}
       </div>
+
+      {/* ── User Creation Trend (Admin only) ─────────────────────── */}
+      {isAdmin && (
+        <Card className="overflow-hidden transition-all duration-300 hover:shadow-lg">
+          <CardHeader className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <CardTitle className="text-base font-semibold flex items-center gap-2">
+                <svg
+                  className="h-5 w-5 text-violet-500"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"
+                  />
+                </svg>
+                User Registrations
+              </CardTitle>
+              <CardDescription>
+                New user accounts created over time
+              </CardDescription>
+            </div>
+
+            {/* Filter Controls */}
+            <div className="flex flex-wrap items-center gap-2">
+              <div className="flex items-center gap-2 bg-muted/50 rounded-md p-1 border">
+                <input
+                  type="date"
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
+                  className="bg-transparent text-sm p-1 rounded focus:outline-none focus:ring-1 focus:ring-ring"
+                />
+                <span className="text-muted-foreground text-sm">to</span>
+                <input
+                  type="date"
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
+                  className="bg-transparent text-sm p-1 rounded focus:outline-none focus:ring-1 focus:ring-ring"
+                />
+              </div>
+              <button
+                onClick={handleApplyFilters}
+                className="bg-primary hover:bg-primary/90 text-primary-foreground text-sm font-medium px-4 py-2 rounded-md transition-colors"
+              >
+                Apply Changes
+              </button>
+            </div>
+          </CardHeader>
+          <CardContent>
+            {trendLoading ? (
+              <div className="h-[320px] w-full flex items-center justify-center">
+                <div className="flex flex-col items-center gap-3">
+                  <div className="h-8 w-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                  <p className="text-sm text-muted-foreground">
+                    Loading chart…
+                  </p>
+                </div>
+              </div>
+            ) : trendData.length === 0 ? (
+              <div className="h-[320px] w-full flex items-center justify-center text-muted-foreground">
+                No data available
+              </div>
+            ) : (
+              <UserCreationChart data={trendData} />
+            )}
+          </CardContent>
+        </Card>
+      )}
 
       {/* ── Quick Actions (User only) ───────────────────────────── */}
       {!isAdmin && (

@@ -4,7 +4,9 @@ import { useAuth } from "@/context/AuthContext";
 
 export function useDashboardStats() {
     const [stats, setStats] = useState<DashboardStats | null>(null);
+    const [trendData, setTrendData] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
+    const [trendLoading, setTrendLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const { user } = useAuth();
 
@@ -13,20 +15,41 @@ export function useDashboardStats() {
             if (!user) return;
             setLoading(true);
             try {
-                const data = user.userType === "SuperAdmin"
-                    ? await dashboardService.getAdminStats()
-                    : await dashboardService.getUserStats();
-                setStats(data);
+                if (user.userType === "SuperAdmin") {
+                    const [statsData, trendRes] = await Promise.all([
+                        dashboardService.getAdminStats(),
+                        dashboardService.getAdminUserTrend()
+                    ]);
+                    setStats(statsData);
+                    setTrendData(trendRes);
+                } else {
+                    const data = await dashboardService.getUserStats();
+                    setStats(data);
+                }
             } catch (err) {
                 setError("Failed to fetch dashboard stats");
                 console.error(err);
             } finally {
                 setLoading(false);
+                setTrendLoading(false);
             }
         };
 
         fetchStats();
     }, [user]);
 
-    return { stats, loading, error };
+    const refetchTrend = async (startDate: string, endDate: string) => {
+        if (!user || user.userType !== "SuperAdmin") return;
+        setTrendLoading(true);
+        try {
+            const trendRes = await dashboardService.getAdminUserTrend(startDate, endDate);
+            setTrendData(trendRes);
+        } catch (err) {
+            console.error("Failed to refetch user creation trend", err);
+        } finally {
+            setTrendLoading(false);
+        }
+    };
+
+    return { stats, trendData, loading, trendLoading, error, refetchTrend };
 }
