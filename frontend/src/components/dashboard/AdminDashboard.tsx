@@ -63,7 +63,7 @@ export default function AdminDashboard() {
   ];
 
   return (
-    <div className="p-6 md:p-8 space-y-8 max-w-6xl mx-auto">
+    <div className="p-6 md:p-8 space-y-8">
       {/* ── Greeting Header ── */}
       <div className="space-y-1">
         <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
